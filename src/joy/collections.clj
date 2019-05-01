@@ -200,3 +200,27 @@
 
 (seq (keys (hash-map :a 1)))
 (class (seq (hash-map :a 1)))
+
+
+;; JAVA INTEROP
+
+;; java.util.List
+(.get '(a b c) 1)
+(.get (repeat :a) 13)
+(.containsAll '[a b c] '[b c])
+
+(.add '[a b c] 'd) ;;=> UnsupportedOpExc
+(java.util.Collections/sort [3 22 1]) ;;=> UnsupportedOpExc
+
+;; java.lang.Comparable | only vector
+(.compareTo [:a] [:a])
+(.compareTo [:a :b] [:a])
+(sort '([:a :b] [:a]))
+
+;; java.util.Collection
+(defn shuffle [col]
+  (seq (doto (java.util.ArrayList. col)
+         java.util.Collections/shuffle)))
+
+(shuffle (range 10))
+

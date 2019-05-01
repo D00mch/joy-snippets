@@ -41,4 +41,3 @@
 
 (.display gui (doto (javax.swing.JPanel.)
                 (.add (javax.swing.JLabel. "Char"))))
-
