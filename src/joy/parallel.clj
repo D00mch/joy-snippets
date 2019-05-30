@@ -12,7 +12,7 @@
 ;; some future example
 
 
-(time (let [x (future (do (Thread/sleep 1000) (+ 23 23)))]
+#_(time (let [x (future (do (Thread/sleep 1000) (+ 23 23)))]
         [@x @x]))
 
 ;; help functions to count titles in RSS or ATOM
@@ -48,11 +48,11 @@
          (mapcat #(re-seq re %))
          count)))
 
-(count-text-task title
+#_(count-text-task title
                  "Erlang"
                  "http://feeds.feedburner.com/ElixirLang")
 
-(count-text-task title
+#_(count-text-task title
                  "Elixir"
                  "http://feeds.feedburner.com/ElixirLang")
 
@@ -61,7 +61,7 @@
 (def feeds #{"http://feeds.feedburner.com/ElixirLang"
              "http://blog.fogus.me/feed/"})
 
-(let [results (for [feed feeds]
+#_(let [results (for [feed feeds]
                 (future
                   (count-text-task title "Elixir" feed)))]
   (reduce + (map deref results)))
@@ -94,10 +94,10 @@
 (def y (promise))
 (def z (promise))
 
-(dothreads! #(deliver z (+ @x @y)))
-(dothreads! #(do (Thread/sleep 2000) (deliver x 52)))
-(dothreads! #(do (Thread/sleep 4000) (deliver y 86)))
-(time @z)
+#_(dothreads! #(deliver z (+ @x @y)))
+#_(dothreads! #(do (Thread/sleep 2000) (deliver x 52)))
+#_(dothreads! #(do (Thread/sleep 4000) (deliver y 86)))
+#_(time @z)
 
 (defmacro with-promises [[n tasks _ as] & body]
   (when as
@@ -129,7 +129,7 @@
                       {:run 1 :passed 1}
                       {:run 1 :failed 1}))))))
 
-(run-tests fail fail fail pass)
+#_(run-tests fail fail fail pass)
 
 ;; CALLBACK API TO BLOCKING API
 
@@ -140,12 +140,12 @@
      (-> item :content first :content))))
 
 ;; with callback, or continuation
-(feed-items
+#_(feed-items
  count
  "http://blog.fogus.me/feed/")
 
 ;; with blocking behavior
-(let [p (promise)]
+#_(let [p (promise)]
   (feed-items #(deliver p (count %))
               "http://blog.fogus.me/feed/")
   @p)
@@ -157,12 +157,12 @@
       @p)))
 
 (def count-items (cps->fn feed-items count))
-(count-items "http://blog.fogus.me/feed/")
+#_(count-items "http://blog.fogus.me/feed/")
 
 ;; PARALLEL OPERATIONS
 
 ;; pvalues
-(pvalues 1 2 (+ 3 4))
+#_(pvalues 1 2 (+ 3 4))
 
 ;; pvalues are lazy seq
 (defn sleeper [s thing] (Thread/sleep (* 1000 s)) thing)
@@ -170,16 +170,16 @@
                       (sleeper 3 :2nd)
                       (sleeper 2 :3rd)
                       (keyword "4th")))
-(-> (pvs) last time)
+#_(-> (pvs) last time)
 
 ;; pmap
-(->> [1 2 3]
+#_(->> [1 2 3]
      (pmap (comp inc (partial sleeper 2)))
      doall
      time)
 
 ;; pcalls is lazy
-(-> (pcalls
+#_(-> (pcalls
      #(sleeper 2 :first)
      #(sleeper 3 :second)
      #(keyword "3rd"))
@@ -190,8 +190,8 @@
 ;; REDUCERS
 (def big-vec (vec (range 1000000)))
 
-(time (reduce + big-vec))
-(time (r/fold + big-vec))
+#_(time (reduce + big-vec))
+#_(time (r/fold + big-vec))
 
 (defn ff []
   (ff))

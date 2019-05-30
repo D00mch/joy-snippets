@@ -15,11 +15,11 @@
                     "do-until requires an even number of forms")))
           (cons 'do-until (nnext clauses)))))
 
-(macroexpand-1 '(do-until true (prn 1) false (prn 2)))
+#_(macroexpand-1 '(do-until true (prn 1) false (prn 2)))
 
-(macroexpand '(do-until true (prn 1) false (prn 2)))
+#_(macroexpand '(do-until true (prn 1) false (prn 2)))
 
-(walk/macroexpand-all '(do-until true (prn 1) false (prn 2)))
+#_(walk/macroexpand-all '(do-until true (prn 1) false (prn 2)))
 
 
 ;; def control structures using syntax-quote and unquoting
@@ -29,7 +29,7 @@
   `(if (not ~condition)
      (do ~@body)))
 
-(walk/macroexpand-all '(unless (= 1 2) (prn "bob") (prn "bob2")))
+#_(walk/macroexpand-all '(unless (= 1 2) (prn "bob") (prn "bob2")))
 
 (defmacro def-watched [name & value]
   `(do (def ~name ~@value)
@@ -38,7 +38,7 @@
                   (fn [~'key ~'r old# new#]
                     (println old# " -> " new#)))))
 
-(walk/macroexpand-all '(def-watched x (* 2 2)))
+#_(walk/macroexpand-all '(def-watched x (* 2 2)))
 
 
 
@@ -101,7 +101,7 @@
 (defmacro resolution [] `x)
 (def x 1)
 
-(let [x 2] (resolution)) ;;=> 1
+#_(let [x 2] (resolution)) ;;=> 1
 
 
 ;; using macros to manage resources
@@ -111,7 +111,7 @@
       InputStreamReader.
       BufferedReader.))
 
-(let [stream (joc-www)]
+#_(let [stream (joc-www)]
   (with-open [page stream]
     (prn (.readLine page))
     (prn "The stream will now close")))
@@ -127,7 +127,9 @@
 
 (declare collect-bodies)
 
-(defmacro contract [name & forms]
+(defmacro contract
+  {:style/indent 1}
+  [name & forms]
   (list* `fn name (collect-bodies forms)))
 
 (declare build-contract)
@@ -150,13 +152,13 @@
                     (throw (Exception. (str "unknown tag" (first con)))))))
      (list* 'f args))))
 
-(collect-bodies '([x]
+#_(collect-bodies '([x]
                  (require
                   (pos? x))
                  (ensure
                   (= (* 2 x) %))))
 
-(build-contract '([x]
+#_(build-contract '([x]
                  (require
                   (pos? x))
                  (ensure
@@ -177,6 +179,6 @@
              (= (* 2 (+ x y)) %))))
 
 (def times2 (partial doubler-conract #(* 2 %)))
-(times2 1)
+#_(times2 1)
 
-((partial doubler-conract #(+ %1 %1 %2 %2)) 2 3)
+#_((partial doubler-conract #(+ %1 %1 %2 %2)) 2 3)

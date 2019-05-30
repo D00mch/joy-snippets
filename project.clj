@@ -5,8 +5,6 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [org.clojure/core.logic "0.8.11"]]
-  :aliases {"fig" ["trampoline" "run" "-m" "figwheel.main"]
-            "build-dev" ["trampoline" "run" "-m" "figwheel.main" "-b" "dev" "-r"]}
   :resource-paths ["target" "resources"]
   :main ^:skip-aot joy.core
   :target-path "target/%s"

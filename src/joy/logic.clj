@@ -350,3 +350,9 @@
       :when (distinct? baker fletcher cooper miller smith)]
   [baker fletcher cooper miller smith])
 
+(logic/run 1 [q]
+  (logic/fresh [x]
+    (fd/in x (fd/interval -100 100))
+    (fd/eq (= (* 2 (+ x 3))
+              18))
+    (logic/== q x)))
